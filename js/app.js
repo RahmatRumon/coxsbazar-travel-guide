@@ -15,7 +15,7 @@ const CATEGORY_CONFIG = {
 const LS_CENTER_KEY = 'cbg_center_id';
 
 // ──────────────────────────────────────────
-//  স্পট ডেটা (সেন্ট মার্টিন ও ছেঁড়া দ্বীপসহ)
+//  স্পট ডেটা
 // ──────────────────────────────────────────
 const SPOTS = [
   {
@@ -143,7 +143,7 @@ const SPOTS = [
     lat: 21.4760, lon: 91.9650, fee: 'বিনামূল্যে', distFromCox: 5,
     transport: 'সিএনজি / অটো', hours: 'সার্বক্ষণিক',
     desc: 'কক্সবাজার শহরের উত্তর দিকে অবস্থিত তুলনামূলক নির্জন এই সৈকত। ভিড় এড়িয়ে শান্ত পরিবেশে সময় কাটানোর জন্য আদর্শ।',
-    tip: 'এয়ারপোর্টের কাছাকাছি হওয়ায় যাতায়াত সহজ।',
+    tip: 'এয়ারপোর্টের কাছাকাছি হওয়ায় যাতায়াত সহজ।',
     cid: '6474330919134508793',
   },
   {
@@ -156,18 +156,18 @@ const SPOTS = [
   },
   {
     id: 18, name: 'সেন্ট মার্টিন দ্বীপ', category: 'island',
-    lat: 20.6275, lon: 92.3215, fee: 'শিপ/ট্রলার ভাড়া প্রযোজ্য', distFromCox: 120,
+    lat: 20.6275, lon: 92.3215, fee: 'শিপ/ট্রলার ভাড়া প্রযোজ্য', distFromCox: 120,
     transport: 'শিপ / স্পিডবোট (টেকনাফ থেকে)', hours: 'সারাদিন',
-    desc: 'বাংলাদেশের একমাত্র প্রবাল দ্বীপ। স্বচ্ছ নীল জলরাশি, নারিকেল গাছ এবং কোরাল পাথরের জন্য এটি পর্যটকদের অন্যতম প্রিয় গন্তব্য।',
-    tip: 'শীতকালে (নভেম্বর-মার্চ) সমুদ্র শান্ত থাকে, তাই এটি সেন্ট মার্টিন ভ্রমণের সেরা সময়।',
+    desc: 'বাংলাদেশের একমাত্র প্রবাল দ্বীপ। স্বচ্ছ নীল জলরাশি, নারিকেল গাছ এবং কোরাল পাথরের জন্য এটি পর্যটকদের অন্যতম প্রিয় গন্তব্য।',
+    tip: 'শীতকালে (নভেম্বর-মার্চ) সমুদ্র শান্ত থাকে, তাই এটি সেন্ট মার্টিন ভ্রমণের সেরা সময়।',
     cid: '2640263389476483584',
   },
   {
-    id: 19, name: 'ছেঁড়া দ্বীপ', category: 'island',
-    lat: 20.5960, lon: 92.3320, fee: 'নৌকা/স্পিডবোট ভাড়া প্রযোজ্য', distFromCox: 125,
-    transport: 'নৌকা / সাইকেল / হাঁটাপথ', hours: 'সারাদিন (ভাটায় যাওয়া নিরাপদ)',
+    id: 19, name: 'ছেঁড়া দ্বীপ', category: 'island',
+    lat: 20.5960, lon: 92.3320, fee: 'নৌকা/স্পিডবোট ভাড়া প্রযোজ্য', distFromCox: 125,
+    transport: 'নৌকা / সাইকেল / হাঁটাপথ', hours: 'সারাদিন (ভাটায় যাওয়া নিরাপদ)',
     desc: 'সেন্ট মার্টিন দ্বীপের বিচ্ছিন্ন একটি অংশ এবং বাংলাদেশের সর্বদক্ষিণ ভূখণ্ড। চারদিকে প্রবাল পাথর আর নীল জলের অপূর্ব সৌন্দর্য।',
-    tip: 'ভাটার সময় হেঁটে বা সাইকেলে যাওয়া যায়। জোয়ারের সময় নৌকা বা স্পিডবোট লাগে।',
+    tip: 'ভাটার সময় হেঁটে বা সাইকেলে যাওয়া যায়। জোয়ারের সময় নৌকা বা স্পিডবোট লাগে।',
     cid: '98453673523456722',
   }
 ];
@@ -204,12 +204,11 @@ let centerId = (() => {
       if (SPOTS.some(s => s.id === id)) return id;
     }
   } catch (_) {}
-  return 6; // ডিফল্ট: ইনানী সমুদ্র সৈকত
+  return 6; 
 })();
 
 let centerDistances = {};
 
-// কেন্দ্র সেভ করার ফাংশন
 function saveCenter(id) {
   centerId = id;
   try { localStorage.setItem(LS_CENTER_KEY, String(id)); } catch (_) {}
@@ -231,11 +230,10 @@ function init() {
 }
 
 // ──────────────────────────────────────────
-//  Map init — ঘোরানো + হালকা 3D অনুভূতি + বাউন্ডারি
+//  Map init
 // ──────────────────────────────────────────
 function initMap() {
-  // ম্যাপের এরিয়া দক্ষিণে আরও বর্ধিত করা হলো (২০.২০ পর্যন্ত)
-  const coxBounds = L.latLngBounds([20.20, 91.50], [22.30, 92.60]);
+  const coxBounds = L.latLngBounds([19.50, 91.00], [23.00, 93.50]);
 
   map = L.map('map', {
     center: [21.28, 92.02],
@@ -246,7 +244,6 @@ function initMap() {
     zoomControl: false,      
   });
 
-  // টাইলস মেমোরিতে ধরে রাখা
   osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
     maxZoom: 19,
@@ -254,7 +251,6 @@ function initMap() {
     updateWhenIdle: true 
   });
 
-  // স্যাটেলাইট লেয়ার
   satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles © Esri',
     maxZoom: 19,
@@ -264,7 +260,6 @@ function initMap() {
 
   osmLayer.addTo(map);
 
-  // মেরিন ড্রাইভ
   L.polyline(MARINE_DRIVE_PATH, {
     color: '#D05000', weight: 3, opacity: 0.8, dashArray: '10 6',
   }).addTo(map).bindTooltip('🛣️ মেরিন ড্রাইভ — কক্সবাজার থেকে টেকনাফ (৮৫ কি.মি.)', {
@@ -272,19 +267,36 @@ function initMap() {
   });
 
   markerGroup = L.layerGroup().addTo(map);
+  
   SPOTS.forEach(spot => {
     const marker = L.marker([spot.lat, spot.lon], { icon: makeIcon(spot) });
-    marker.bindPopup(makePopup(spot), { maxWidth: 290, minWidth: 260, className: 'custom-popup' });
-    marker.on('click', () => activateCard(spot.id));
+    
+    // Auto-Pan বন্ধ করা হলো কারণ 3D তে এটি ভুল দিকে প্যান করে
+    marker.bindPopup(makePopup(spot), { 
+      maxWidth: 290, 
+      minWidth: 260, 
+      className: 'custom-popup',
+      autoPan: false 
+    });
+    
+    marker.on('click', () => {
+      activateCard(spot.id);
+      
+      map.flyTo([spot.lat + 0.08, spot.lon], 10, {
+        animate: true,
+        duration: 0.6
+      });
+      
+      closeSidebarMobile();
+    });
+    
     markers[spot.id] = marker;
     markerGroup.addLayer(marker);
   });
 
-  // Custom zoom buttons
   document.getElementById('zoomIn').addEventListener('click',  () => map.zoomIn());
   document.getElementById('zoomOut').addEventListener('click', () => map.zoomOut());
 
-  // লেয়ার পরিবর্তন
   let isSatellite = false;
   const btnLayer = document.getElementById('btnLayer');
   if(btnLayer) {
@@ -304,7 +316,6 @@ function initMap() {
     });
   }
 
-  // ম্যাপ রিসেট
   const btnResetView = document.getElementById('btnResetView');
   if(btnResetView) {
     btnResetView.addEventListener('click', () => {
@@ -313,11 +324,10 @@ function initMap() {
       applyMapTransform();
       updateCompass();
       map.setView([21.28, 92.02], 9);
-      showToast("জুম ও রোটেশন রিসেট করা হয়েছে");
+      showToast("জুম ও রোটেশন রিসেট করা হয়েছে");
     });
   }
 
-  // Geolocation
   const btnLocate = document.getElementById('btnLocate');
   if(btnLocate) {
     btnLocate.addEventListener('click', () => {
@@ -328,23 +338,33 @@ function initMap() {
 
   map.on('locationfound', e => {
     if (!coxBounds.contains(e.latlng)) {
-      showToast("আপনার অবস্থান উক্ত এরিয়াতে পাওয়া যাচ্ছেনা");
+      showToast("আপনার অবস্থান উক্ত এরিয়াতে পাওয়া যাচ্ছেনা");
       return; 
     }
     map.flyTo(e.latlng, 14);
     L.circleMarker(e.latlng, {
       color: '#1A5FA8', fillColor: '#1A5FA8', fillOpacity: 0.5, radius: 8
     }).addTo(map).bindPopup("📍 আপনি এখানে আছেন").openPopup();
-    showToast("অবস্থান পাওয়া গেছে!");
+    showToast("অবস্থান পাওয়া গেছে!");
   });
 
   map.on('locationerror', () => {
-    showToast("লোকেশন পাওয়া যায়নি। ব্রাউজারের লোকেশন পারমিশন চেক করুন।");
+    showToast("লোকেশন পাওয়া যায়নি। ব্রাউজারের লোকেশন পারমিশন চেক করুন।");
   });
 
-  // Map ঘোরানোর ইভেন্ট
   initMapRotateAndTilt();
   map.on('move zoom', updateCompass);
+}
+
+// ──────────────────────────────────────────
+//  পপআপ আপডেট ফাংশন
+// ──────────────────────────────────────────
+function updateAllPopups() {
+  SPOTS.forEach(spot => {
+    if (markers[spot.id]) {
+      markers[spot.id].setPopupContent(makePopup(spot));
+    }
+  });
 }
 
 // ──────────────────────────────────────────
@@ -359,7 +379,7 @@ function showToast(msg) {
 }
 
 // ──────────────────────────────────────────
-//  Map Rotate + Tilt (CSS-based, plugin-free)
+//  Map Rotate + Tilt
 // ──────────────────────────────────────────
 let mapBearing = 0;   
 let mapTilt    = 0;   
@@ -440,7 +460,7 @@ function makeIcon(spot) {
 }
 
 // ──────────────────────────────────────────
-//  Google Maps URLs (Official CID Format)
+//  Google Maps URLs 
 // ──────────────────────────────────────────
 function getViewUrl(spot) {
   if (spot.cid) {
@@ -461,11 +481,16 @@ function makePopup(spot) {
   const { color, emoji, label } = CATEGORY_CONFIG[spot.category];
   const centerSpot = SPOTS.find(s => s.id === centerId);
   const roadKm     = centerDistances[spot.id];
-  const distLine   = spot.id === centerId
-    ? `<li><span>📍</span>নির্বাচিত কেন্দ্র</li>`
-    : roadKm != null
-      ? `<li><span>🛣️</span>${centerSpot.name} থেকে ${roadKm} কি.মি. (সড়কপথ)</li>`
-      : `<li><span>📏</span>${centerSpot ? centerSpot.name : ''} থেকে আনুমানিক ${spot.distFromCox} কি.মি.</li>`;
+  
+  let distLine = '';
+  if (spot.id === centerId) {
+    distLine = `<li><span>📍</span>নির্বাচিত কেন্দ্র</li>`;
+  } else if (roadKm != null) {
+    distLine = `<li><span>🛣️</span>${centerSpot.name} থেকে ${roadKm} কি.মি. (সড়কপথ)</li>`;
+  } else {
+    const airKm = haversine(centerSpot.lat, centerSpot.lon, spot.lat, spot.lon).toFixed(1);
+    distLine = `<li><span>📏</span>${centerSpot.name} থেকে আনুমানিক ${airKm} কি.মি. (আকাশপথে)</li>`;
+  }
 
   return `<div class="spop">
     <p class="spop-name">${spot.name}</p>
@@ -496,21 +521,27 @@ function makePopup(spot) {
 // ──────────────────────────────────────────
 function renderSidebar(spots) {
   const list = document.getElementById('spotList');
+  const centerSpot = SPOTS.find(s => s.id === centerId);
+  
   if (!spots.length) {
     list.innerHTML = '<p class="no-result">এই ক্যাটাগরিতে কোনো স্থান নেই।</p>';
     return;
   }
+  
   list.innerHTML = spots.map(spot => {
     const { color, emoji, label } = CATEGORY_CONFIG[spot.category];
     const roadKm = centerDistances[spot.id];
     let kmLabel;
+    
     if (spot.id === centerId) {
       kmLabel = '<span class="scard-km road">কেন্দ্র ⭐</span>';
     } else if (roadKm != null) {
       kmLabel = `<span class="scard-km road">🛣️ ${roadKm} কি.মি.</span>`;
     } else {
-      kmLabel = `<span class="scard-km">${spot.distFromCox > 0 ? spot.distFromCox + ' কি.মি.' : 'কেন্দ্র'}</span>`;
+      const airKm = haversine(centerSpot.lat, centerSpot.lon, spot.lat, spot.lon).toFixed(1);
+      kmLabel = `<span class="scard-km">📏 ${airKm} কি.মি.</span>`;
     }
+    
     return `<div class="scard" data-id="${spot.id}" onclick="onCardClick(${spot.id})">
       <span class="scard-bar" style="background:${color}"></span>
       <div class="scard-body">
@@ -533,7 +564,7 @@ function onCardClick(id) {
   const spot = SPOTS.find(s => s.id === id);
   if (!spot) return;
   activateCard(id);
-  map.flyTo([spot.lat, spot.lon], 13, { duration: 0.9 });
+  map.flyTo([spot.lat + 0.08, spot.lon], 10, { duration: 0.9 });
   closeSidebarMobile();
   markers[id].setPopupContent(makePopup(spot));
   markers[id].openPopup();
@@ -573,7 +604,7 @@ function updateTabCounts() {
 }
 
 // ──────────────────────────────────────────
-//  Mobile Sidebar (ডানদিক থেকে)
+//  Mobile Sidebar
 // ──────────────────────────────────────────
 function initSidebarMobile() {
   const toggle  = document.getElementById('sidebarToggle');
@@ -620,6 +651,7 @@ function populateDistanceSelects() {
     saveCenter(+cSel.value);
     centerDistances = {};
     renderSidebar(getFiltered());
+    updateAllPopups(); 
     loadCenterDistances(centerId);
     const fromSel = document.getElementById('fromSel');
     if (fromSel) fromSel.value = centerId;
@@ -672,6 +704,7 @@ async function loadCenterDistances(fromId) {
   }
 
   renderSidebar(getFiltered());
+  updateAllPopups(); 
 }
 
 // ──────────────────────────────────────────
@@ -712,7 +745,7 @@ async function calcDistance() {
     const time    = hrs > 0 ? `${hrs} ঘণ্টা ${remMins} মিনিট` : `${remMins} মিনিট`;
 
     el.innerHTML = `<div class="dist-num">${km}<span class="dist-unit"> কি.মি.</span></div>
-      <div class="dist-sub">🛣️ সড়কপথে · আনুমানিক সময় ${time}</div>
+      <div class="dist-sub">🛣️ সড়কপথে · আনুমানিক সময় ${time}</div>
       <div class="dist-path">${a.name} → ${b.name}</div>`;
     el.style.display = 'block';
 
@@ -727,7 +760,7 @@ async function calcDistance() {
 
     const km = haversine(a.lat, a.lon, b.lat, b.lon).toFixed(1);
     el.innerHTML = `<div class="dist-num">${km}<span class="dist-unit"> কি.মি.</span></div>
-      <div class="dist-sub">আকাশপথে দূরত্ব (সড়কপথ পাওয়া যায়নি)</div>
+      <div class="dist-sub">আকাশপথে দূরত্ব (সড়কপথ পাওয়া যায়নি)</div>
       <div class="dist-path">${a.name} → ${b.name}</div>`;
     el.style.display = 'block';
     distanceLine = L.polyline([[a.lat,a.lon],[b.lat,b.lon]], {
@@ -753,8 +786,9 @@ function haversine(lat1, lon1, lat2, lon2) {
 
 window.addEventListener('load', () => {
   if (typeof L === 'undefined') {
-    showToast("ম্যাপ লাইব্রেরি লোড হতে পারেনি! দয়া করে ইন্টারনেট কানেকশন চেক করুন।");
+    showToast("ম্যাপ লাইব্রেরি লোড হতে পারেনি! দয়া করে ইন্টারনেট কানেকশন চেক করুন।");
     return;
   }
   init();
 });
+
