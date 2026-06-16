@@ -1,0 +1,641 @@
+/* coxsbazar-guide/css/style.css */
+
+/* ══════════════════════════════════════════
+   কক্সবাজার ট্রাভেল গাইড — style.css
+══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap');
+
+/* ── CSS Variables ── */
+:root {
+  --c-header:   #1B3D2C;
+  --c-bg:       #F4F1EB;
+  --c-surface:  #FFFFFF;
+  --c-border:   #E3DFD7;
+  --c-text:     #28261F;
+  --c-muted:    #78756E;
+  --c-accent:   #D05000;
+
+  --c-beach:    #0A7A5E;
+  --c-nature:   #2D6A2D;
+  --c-island:   #1A5FA8;
+  --c-heritage: #B5630A;
+
+  --sidebar-w:  320px;
+  --header-h:   56px;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+
+  --sh-sm: 0 1px 4px rgba(0,0,0,0.07);
+  --sh-md: 0 4px 16px rgba(0,0,0,0.10);
+  --sh-lg: 0 8px 28px rgba(0,0,0,0.15);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+a  { text-decoration: none; }
+ul { list-style: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+select { font-family: inherit; }
+
+/* ── Base ── */
+html, body {
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+}
+body {
+  font-family: 'Noto Sans Bengali', system-ui, sans-serif;
+  background: #000;
+  color: var(--c-text);
+  font-size: 14px;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ══════════════════════════════
+   HEADER
+══════════════════════════════ */
+.header {
+  height: var(--header-h);
+  background: var(--c-header);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  z-index: 1200;
+  position: relative;
+}
+.header-icon { font-size: 24px; line-height: 1; flex-shrink: 0; }
+.header-text { flex: 1; min-width: 0; }
+.header-text h1 { font-size: 14.5px; font-weight: 700; line-height: 1.2; }
+.header-text p  { font-size: 10.5px; opacity: 0.58; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.header-chip {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 11.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.sidebar-toggle {
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.24);
+  border-radius: var(--r-sm);
+  color: #fff;
+  padding: 6px 11px;
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+  display: none; /* desktop: hidden */
+}
+
+/* ══════════════════════════════
+   LAYOUT
+══════════════════════════════ */
+.layout {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ══════════════════════════════
+   MAP (fills everything) - Updated for 3D Transform
+══════════════════════════════ */
+.map-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #B5D0D0; /* পানির রঙের কাছাকাছি ব্যাকগ্রাউন্ড */
+}
+#map {
+  /* কন্টেইনার স্ক্রিনের চেয়ে বড় করা হলো যাতে ঘোরালে কোণা ফাঁকা না হয় */
+  width: 150vw;
+  height: 150vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -75vh;
+  margin-left: -75vw;
+  
+  /* ব্রাউজারকে আগে থেকে সতর্ক করা, যেন অ্যানিমেশন স্মুথ হয় */
+  will-change: transform;
+}
+
+/* ══════════════════════════════
+   CUSTOM MAP CONTROLS (Zoom + Compass + Tools)
+══════════════════════════════ */
+.map-controls {
+  position: absolute;
+  bottom: 32px;
+  right: 14px;       /* desktop: ডানে */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 900;
+}
+.mc-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-sm);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--sh-md);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--c-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, transform 0.1s;
+  line-height: 1;
+}
+.mc-btn:hover  { background: #f0ede6; }
+.mc-btn:active { transform: scale(0.93); }
+#btnLocate, #btnLayer { font-size: 16px; }
+
+/* Compass */
+.compass {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  box-shadow: var(--sh-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.compass-needle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  transform-origin: center;
+  transition: transform 0.4s ease;
+}
+.cn-n {
+  font-size: 10px;
+  font-weight: 700;
+  color: #C0392B;
+  line-height: 1.1;
+}
+.cn-s {
+  font-size: 8px;
+  font-weight: 600;
+  color: #666;
+  line-height: 1.1;
+}
+
+/* ══════════════════════════════
+   SIDEBAR
+══════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--c-surface);
+  border-left: 1px solid var(--c-border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  z-index: 1000;
+  /* desktop-এ সবসময় দৃশ্যমান */
+}
+
+.sidebar-close {
+  display: none; /* desktop: hidden */
+}
+
+/* Overlay (মোবাইলে sidebar খোলা থাকলে পেছনে) */
+.sidebar-overlay {
+  display: none;
+}
+
+/* ── Filter Tabs ── */
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--c-border);
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.ftab {
+  padding: 4px 9px;
+  border-radius: 20px;
+  border: 1px solid var(--c-border);
+  font-size: 11.5px;
+  color: var(--c-muted);
+  background: transparent;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.ftab:hover  { border-color: #aaa8a0; color: var(--c-text); }
+.ftab.active { background: var(--c-header); color: #fff; border-color: var(--c-header); }
+
+/* ── Distance Panel ── */
+.dist-panel {
+  border-bottom: 1px solid var(--c-border);
+  padding: 10px 12px;
+  background: #F9F6F0;
+  flex-shrink: 0;
+}
+.dist-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+.dist-panel-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-text);
+}
+.dist-panel-toggle {
+  font-size: 10.5px;
+  color: var(--c-muted);
+  padding: 2px 5px;
+  border-radius: var(--r-sm);
+  transition: background 0.15s;
+}
+.dist-panel-toggle:hover { background: #EDE9E1; }
+
+.dist-panel-body {
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+  max-height: 320px;
+}
+.dist-panel-body.collapsed { max-height: 0; }
+
+.center-select-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 9px;
+  margin-bottom: 5px;
+}
+.center-select-label {
+  font-size: 11px;
+  color: var(--c-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.center-select-row select,
+.calc-selects select {
+  flex: 1;
+  font-size: 11.5px;
+  padding: 6px 7px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-sm);
+  background: var(--c-surface);
+  color: var(--c-text);
+  outline: none;
+  min-width: 0;
+}
+.center-select-row select:focus,
+.calc-selects select:focus { border-color: var(--c-header); }
+
+.center-divider {
+  font-size: 10px;
+  color: var(--c-muted);
+  padding: 2px 0 7px;
+  border-top: 1px dashed var(--c-border);
+  margin-top: 3px;
+}
+.calc-selects {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.calc-arrow { color: var(--c-muted); font-size: 14px; flex-shrink: 0; }
+
+#distRes {
+  display: none;
+  margin-top: 8px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+}
+.dist-num  { font-size: 24px; font-weight: 700; color: var(--c-header); line-height: 1; }
+.dist-unit { font-size: 13px; font-weight: 400; }
+.dist-sub  { font-size: 10px; color: var(--c-muted); margin: 3px 0 5px; }
+.dist-path { font-size: 11px; color: var(--c-text); line-height: 1.4; }
+.dist-warn { font-size: 12px; color: #B04040; }
+.dist-loading {
+  font-size: 12px; color: var(--c-muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.dist-loading::before {
+  content: '';
+  width: 13px; height: 13px;
+  border: 2px solid var(--c-border);
+  border-top-color: var(--c-header);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Spot List ── */
+.spot-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 7px;
+  min-height: 0;
+}
+.spot-list::-webkit-scrollbar { width: 3px; }
+.spot-list::-webkit-scrollbar-track { background: transparent; }
+.spot-list::-webkit-scrollbar-thumb { background: #D0CCC4; border-radius: 2px; }
+
+.scard {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-md);
+  margin-bottom: 5px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: box-shadow 0.15s, border-color 0.15s, background 0.15s;
+  background: var(--c-surface);
+}
+.scard:hover  { box-shadow: var(--sh-sm); border-color: #C5C2BA; }
+.scard.active { box-shadow: var(--sh-md); border-color: var(--c-header); background: #F6FAF7; }
+
+.scard-bar  { width: 4px; flex-shrink: 0; }
+.scard-body { padding: 9px 11px; flex: 1; min-width: 0; }
+.scard-top  {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+.scard-name { font-size: 12.5px; font-weight: 600; line-height: 1.3; flex: 1; }
+.scard-km   { font-size: 10.5px; color: var(--c-muted); white-space: nowrap; flex-shrink: 0; }
+.scard-km.road { color: var(--c-header); font-weight: 600; }
+.scard-tags { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+.stag {
+  font-size: 10.5px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.sfee {
+  font-size: 10.5px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: #F0EDE5;
+  color: #6A6760;
+}
+.no-result {
+  text-align: center;
+  padding: 24px 14px;
+  color: var(--c-muted);
+  font-size: 13px;
+}
+
+/* ══ Legend — sidebar নিচে ══ */
+.map-legend {
+  border-top: 1px solid var(--c-border);
+  padding: 10px 14px;
+  background: #F9F6F0;
+  flex-shrink: 0;
+}
+.legend-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--c-text);
+  margin-bottom: 4px;
+}
+.legend-row:last-child { margin-bottom: 0; }
+.l-dot {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.7);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+}
+.l-dot.beach    { background: var(--c-beach);    }
+.l-dot.nature   { background: var(--c-nature);   }
+.l-dot.island   { background: var(--c-island);   }
+.l-dot.heritage { background: var(--c-heritage); }
+.l-line {
+  width: 20px; flex-shrink: 0;
+  border-top: 3px dashed var(--c-accent);
+  border-radius: 2px;
+}
+
+/* ══════════════════════════════
+   LEAFLET OVERRIDES
+══════════════════════════════ */
+.m-pin {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--pin-color, #555);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2.5px solid rgba(255,255,255,0.92);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.28), 0 1px 3px rgba(0,0,0,0.16);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.m-pin:hover { transform: scale(1.16); box-shadow: 0 5px 14px rgba(0,0,0,0.32); }
+.m-emoji { font-size: 15px; line-height: 1; }
+
+.custom-popup .leaflet-popup-content-wrapper {
+  border-radius: var(--r-lg) !important;
+  box-shadow: var(--sh-lg) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+.custom-popup .leaflet-popup-content {
+  margin: 0 !important;
+  width: 276px !important;
+}
+.custom-popup .leaflet-popup-tip-container { margin-top: -1px; }
+
+.spop { padding: 14px; font-family: 'Noto Sans Bengali', system-ui, sans-serif; }
+.spop-name  { font-size: 13.5px; font-weight: 700; line-height: 1.3; color: #1A1917; margin-bottom: 5px; }
+.spop-badge { display: inline-block; font-size: 10.5px; padding: 2px 8px; border-radius: 20px; font-weight: 500; margin-bottom: 8px; }
+.spop-desc  { font-size: 11.5px; color: #545250; line-height: 1.65; margin-bottom: 9px; }
+.spop-meta  { margin-bottom: 8px; }
+.spop-meta li { display: flex; gap: 5px; font-size: 11.5px; color: #424040; margin-bottom: 3px; align-items: flex-start; }
+.spop-meta li:last-child { margin-bottom: 0; }
+.spop-meta li span { flex-shrink: 0; }
+.spop-tip {
+  background: #FFFBF0;
+  border: 1px solid #EDE0BC;
+  border-radius: var(--r-sm);
+  padding: 6px 9px;
+  font-size: 11px;
+  color: #7A5C10;
+  display: flex;
+  gap: 5px;
+  line-height: 1.5;
+  margin-bottom: 9px;
+}
+.spop-btns { display: flex; gap: 5px; }
+.btn-view, .btn-dir {
+  display: flex; align-items: center; gap: 4px;
+  padding: 7px 10px;
+  border-radius: var(--r-sm);
+  font-size: 11.5px;
+  font-family: 'Noto Sans Bengali', sans-serif;
+  font-weight: 500;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-view { flex: 1; justify-content: center; background: var(--c-header); color: #fff; }
+.btn-view:hover { background: #2D5A46; }
+.btn-dir  { background: #EDEBE5; color: #3A3835; border: 1px solid #DEDAD2; }
+.btn-dir:hover { background: #E3E0D8; }
+
+.marine-tooltip,
+.dist-tooltip {
+  font-family: 'Noto Sans Bengali', sans-serif !important;
+  font-size: 11.5px !important;
+  background: rgba(24,24,20,0.88) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: var(--r-sm) !important;
+  padding: 5px 9px !important;
+  box-shadow: var(--sh-sm) !important;
+}
+.marine-tooltip::before,
+.dist-tooltip::before { display: none !important; }
+
+/* ══════════════════════════════
+   TOAST MESSAGE
+══════════════════════════════ */
+.toast-msg {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(40, 38, 31, 0.9);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, bottom 0.3s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.toast-msg.show {
+  opacity: 1;
+  visibility: visible;
+  bottom: 30px;
+}
+
+/* ══════════════════════════════
+   RESPONSIVE — MOBILE  (≤768px)
+══════════════════════════════ */
+@media (max-width: 768px) {
+  :root {
+    --header-h: 50px;
+  }
+
+  /* Sidebar toggle বোতাম দৃশ্যমান */
+  .sidebar-toggle { display: flex; align-items: center; }
+  .header-chip    { display: none; }
+
+  /* Layout: map সম্পূর্ণ স্ক্রিন জুড়ে */
+  .layout {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+  }
+  .map-wrap {
+    position: absolute;
+    inset: 0;          
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Sidebar: ডানদিক থেকে slide-in, চওড়া ৮০vw বা ২৮০px */
+  .sidebar {
+    position: fixed;
+    top: var(--header-h);
+    right: 0;
+    bottom: 0;
+    width: min(80vw, 280px);
+    border-left: 1px solid var(--c-border);
+    box-shadow: -4px 0 24px rgba(0,0,0,0.18);
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    z-index: 1100;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Close button (×) sidebar-এর ভেতরে উপরে */
+  .sidebar-close {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 8px 10px 0;
+    font-size: 18px;
+    color: var(--c-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .sidebar-close:hover { color: var(--c-text); }
+
+  /* Overlay */
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 1050;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+  }
+  .sidebar-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Map controls: মোবাইলে বামে */
+  .map-controls {
+    right: auto;
+    left: 12px;
+    bottom: 24px;
+  }
+
+  /* Popup ছোট */
+  .custom-popup .leaflet-popup-content { width: 240px !important; }
+
+  /* Legend padding কমাও */
+  .map-legend { padding: 8px 12px; }
+}
+
+@media (max-width: 400px) {
+  .ftab { font-size: 10.5px; padding: 3px 7px; }
+  .calc-selects { flex-direction: column; }
+  .calc-arrow   { transform: rotate(90deg); }
+}
