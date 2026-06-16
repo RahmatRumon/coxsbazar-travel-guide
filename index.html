@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="কক্সবাজারের সকল দর্শনীয় স্থান, এন্ট্রি ফি ও দূরত্বের ইন্টারেক্টিভ ম্যাপ গাইড।" />
+  <title>কক্সবাজার ট্রাভেল গাইড 🌊</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <span class="header-icon">🌊</span>
+        <div class="header-text">
+      <h1>কক্সবাজার ট্রাভেল গাইড</h1>
+      <p>সেন্ট মার্টিন ও কক্সবাজারের সকল দর্শনীয় স্থান · এন্ট্রি ফি · দূরত্ব</p>
+    </div>
+    <span class="header-chip">১৯টি স্পট</span>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="তালিকা দেখুন">☰</button>
+  </header>
+
+  <div class="layout">
+
+    <div class="map-wrap">
+      <div id="map"></div>
+
+      <div class="map-controls" id="mapControls">
+        <button class="mc-btn" id="zoomIn"  title="Zoom In">+</button>
+        <button class="mc-btn" id="zoomOut" title="Zoom Out">−</button>
+        <button class="mc-btn" id="btnLocate" title="আমার অবস্থান">📍</button>
+        <button class="mc-btn" id="btnLayer" title="স্যাটেলাইট ভিউ">🌍</button>
+        <button class="mc-btn" id="btnResetView" title="ম্যাপ সোজা করুন">🔄</button>
+        <div class="compass" id="compass" title="উত্তর">
+          <div class="compass-needle" id="compassNeedle">
+            <span class="cn-n">N</span>
+            <span class="cn-s">S</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="sidebar" id="sidebar">
+
+      <button class="sidebar-close" id="sidebarClose" aria-label="বন্ধ করুন">✕</button>
+
+      <div class="filter-tabs" role="tablist">
+        <button class="ftab active" data-cat="all"      role="tab">সব</button>
+        <button class="ftab"        data-cat="beach"    role="tab">সৈকত</button>
+        <button class="ftab"        data-cat="nature"   role="tab">প্রকৃতি</button>
+        <button class="ftab"        data-cat="island"   role="tab">দ্বীপ</button>
+        <button class="ftab"        data-cat="heritage" role="tab">ঐতিহ্য</button>
+      </div>
+
+      <div class="dist-panel">
+        <div class="dist-panel-header" id="distPanelHeader">
+          <span class="dist-panel-title">📏 দূরত্ব হিসাব করুন</span>
+          <button class="dist-panel-toggle" id="distPanelToggleBtn">▲ লুকান</button>
+        </div>
+        <div class="dist-panel-body" id="distPanelBody">
+          <div class="center-select-row">
+            <span class="center-select-label">⭐ কেন্দ্র:</span>
+            <select id="centerSel" aria-label="কেন্দ্র নির্বাচন করুন"></select>
+          </div>
+          <p class="center-divider">↑ তালিকায় এই স্থান থেকে দূরত্ব দেখাবে</p>
+          <div class="calc-selects">
+            <select id="fromSel" aria-label="প্রথম স্থান"></select>
+            <span class="calc-arrow">→</span>
+            <select id="toSel"   aria-label="দ্বিতীয় স্থান"></select>
+          </div>
+          <div id="distRes"></div>
+        </div>
+      </div>
+
+      <div class="spot-list" id="spotList" role="list"></div>
+
+      <div class="map-legend">
+        <div class="legend-row"><span class="l-dot beach"></span>    সৈকত</div>
+        <div class="legend-row"><span class="l-dot nature"></span>   প্রকৃতি</div>
+        <div class="legend-row"><span class="l-dot island"></span>   দ্বীপ</div>
+        <div class="legend-row"><span class="l-dot heritage"></span> ঐতিহ্য</div>
+        <div class="legend-row"><span class="l-line"></span>         মেরিন ড্রাইভ</div>
+      </div>
+
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  </div><div id="toastMsg" class="toast-msg"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
