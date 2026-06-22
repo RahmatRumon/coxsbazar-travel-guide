@@ -399,9 +399,8 @@ function initMap() {
       mapBearing = 0;
       mapTilt = 0;
       applyMapTransform();
-      updateCompass();
-      map.setView([21.28, 92.02], 9);
-      showToast("জুম ও রোটেশন রিসেট করা হয়েছে");
+      updateCompass();   
+      showToast("রোটেশন রিসেট করা হয়েছে");
     });
   }
 
