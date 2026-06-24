@@ -420,7 +420,7 @@ function initMap() {
     map.flyTo(e.latlng, 14);
     L.circleMarker(e.latlng, {
       color: '#1A5FA8', fillColor: '#1A5FA8', fillOpacity: 0.5, radius: 8
-    }).addTo(map).bindPopup("📍 আপনি এখানে আছেন").openPopup();
+    }).addTo(map).bindPopup("📍").openPopup();
     showToast("অবস্থান পাওয়া গেছে!");
   });
 
